@@ -4,12 +4,24 @@ const gridSize = 16;
 
 grid = [];
 
-// Function to call with x and y coordinates
-function processItem(x, y) {
-    console.log(`Processing item at (${x}, ${y})`);
-    grid[y][x].classList.add('clicked');
+bombMask = []; // 0 = no bomb, 1 = bomb
+cellState = []; // 0 = unclicked, 1 = clicked, 2 = flagged, 3 = question mark
 
-    // Add your logic here
+// Function to call with x and y coordinates
+function processItem(x, y, event) {
+    console.log(`Processing item at (${x}, ${y})`);
+    const item = grid[y][x]
+
+    // check if the item has the class clicked (basicaly a toggle)
+    if (item.classList.contains('clicked')) {
+        item.classList.remove('clicked');
+        cellState[y][x] = 1;
+    } else {
+        item.classList.add('clicked');
+        cellState[y][x] = 0;
+    }
+    
+    // Add logic here
 }
 
 // Get the grid container element
@@ -19,6 +31,7 @@ const gridContainer = document.querySelector('.game');
 for (let y = 0; y < gridSize; y++) {
     // Create a new row
     grid.push([]);
+    cellState.push([]);
 
     for (let x = 0; x < gridSize; x++) {
         // Create a new div element for each cell
@@ -33,8 +46,10 @@ for (let y = 0; y < gridSize; y++) {
 
         // Add the cell to the grid
         grid[y].push(cell);
+        cellState[y].push(0);
     }
 }
 
 // Print the grid
 console.log(grid);
+console.log(cellState);

@@ -23,3 +23,43 @@
 .clicked:hover {
     background-color: #0a0;
 }
+
+.flagged {
+    background-color: #800;
+}
+
+.flagged:hover {
+    background-color: #a00;
+}
+
+.selectionbuttons {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#selectbtn {
+    width: 100px;
+    height: 100px;
+    background-color: #5f5;
+    border: #888 solid 1px;
+    border-radius: 50px;
+}
+#selectbtn:hover {
+    background-color: #7f7;
+}
+
+#flagbtn {
+    width: 100px;
+    height: 100px;
+    background-color: #55f;
+    border: #888 solid 1px;
+    border-radius: 50px;
+}
+
+#flagbtn:hover {
+    background-color: #77f;
+}
