@@ -16,21 +16,56 @@
     background-color: #aaa;
 }
 
+/* Clicked */
 .clicked {
     background-color: #080;
 }
-
 .clicked:hover {
     background-color: #0a0;
 }
 
+/* Flagged */
 .flagged {
     background-color: #800;
 }
-
 .flagged:hover {
     background-color: #a00;
 }
+
+/* Mine */
+.mine {
+    background-color: #f00;
+}
+.mine:hover {
+    background-color: #f22;
+}
+
+/* Numbers */
+.num1 {
+    color: #00f;
+}
+.num2 {
+    color: #080;
+}
+.num3 {
+    color: #f00;
+}
+.num4 {
+    color: #008;
+}
+.num5 {
+    color: #800;
+}
+.num6 {
+    color: #008;
+}
+.num7 {
+    color: #800;
+}
+.num8 {
+    color: #008;
+}
+
 
 .selectionbuttons {
     width: 300px;
@@ -41,6 +76,7 @@
     margin-top: 20px;
 }
 
+/* Select button */
 #selectbtn {
     width: 100px;
     height: 100px;
@@ -52,6 +88,7 @@
     background-color: #7f7;
 }
 
+/* FLAG button */
 #flagbtn {
     width: 100px;
     height: 100px;

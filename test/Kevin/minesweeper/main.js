@@ -1,10 +1,12 @@
 
 // Define the grid size
 const gridSize = 16;
+const bombCount = 40;
 
 grid = [];
 
-bombMask = []; // 0 = no bomb, 1 = bomb
+bombs = []; // 0 = no bomb, 1 = bomb
+bombProximityMask = []; // 0 = no bomb, 1 = 1 bomb, 2 = 2 bombs, etc.
 cellState = []; // 0 = unclicked, 1 = clicked, 2 = flagged, 3 = question mark
 
 // Function to call with x and y coordinates
@@ -22,6 +24,73 @@ function processItem(x, y, event) {
     }
     
     // Add logic here
+    // Check if the item has a bomb
+    if (bombs[y][x] === 1) {
+        console.log('BOOM!');
+        for (let x = 0; x < gridSize; x++) {
+            for (let y = 0; y < gridSize; y++) {
+                if (bombs[y][x] === 1) {
+                    grid[y][x].classList.add('mine');
+                }
+            }
+        }
+    } else {
+        console.log('No bomb');
+    }
+}
+
+// Function to add bombs randomly
+function addBombs() {
+    let bC = 0;
+    while (bC < bombCount) {
+        const x = Math.floor(Math.random() * gridSize);
+        const y = Math.floor(Math.random() * gridSize);
+        if (bombs[y][x] === 0) {
+            bombs[y][x] = 1;
+            bC++;
+            console.log(`Added bomb at (${x}, ${y})`);
+        }
+    }
+}
+
+// Function to calculate the bomb proximity mask
+function calcBombProximity() {
+    for (let y = 0; y < gridSize; y++) {
+        bombProximityMask.push([]);
+        for (let x = 0; x < gridSize; x++) {
+            let bombCount = 0;
+            // Check if there is a bomb in the 8 surrounding cells
+            if (x > 0 && y > 0 && bombs[y - 1][x - 1] === 1) {
+                bombCount++;
+            }
+            if (y > 0 && bombs[y - 1][x] === 1) {
+                bombCount++;
+            }
+            if (x < gridSize - 1 && y > 0 && bombs[y - 1][x + 1] === 1) {
+                bombCount++;
+            }
+            if (x > 0 && bombs[y][x - 1] === 1) {
+                bombCount++;
+            }
+            if (x < gridSize - 1 && bombs[y][x + 1] === 1) {
+                bombCount++;
+            }
+            if (x > 0 && y < gridSize - 1 && bombs[y + 1][x - 1] === 1) {
+                bombCount++;
+            }
+            if (y < gridSize - 1 && bombs[y + 1][x] === 1) {
+                bombCount++;
+            }
+            if (x < gridSize - 1 && y < gridSize - 1 && bombs[y + 1][x + 1] === 1) {
+                bombCount++;
+            }
+            bombProximityMask[y].push(bombCount);
+        }
+    }
+}
+
+function debugbombs() {
+    console.log(bombs);
 }
 
 // Get the grid container element
@@ -32,6 +101,7 @@ for (let y = 0; y < gridSize; y++) {
     // Create a new row
     grid.push([]);
     cellState.push([]);
+    bombs.push([]);
 
     for (let x = 0; x < gridSize; x++) {
         // Create a new div element for each cell
@@ -47,9 +117,14 @@ for (let y = 0; y < gridSize; y++) {
         // Add the cell to the grid
         grid[y].push(cell);
         cellState[y].push(0);
+        bombs[y].push(0);
     }
 }
 
-// Print the grid
-console.log(grid);
-console.log(cellState);
+// Call the function to add bombs
+addBombs();
+calcBombProximity();
+
+// Print the bombs array
+console.log(bombs);
+console.log(bombProximityMask);
