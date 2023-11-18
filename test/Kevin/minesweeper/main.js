@@ -14,15 +14,6 @@ function processItem(x, y, event) {
     console.log(`Processing item at (${x}, ${y})`);
     const item = grid[y][x]
 
-    // check if the item has the class clicked (basicaly a toggle)
-    if (item.classList.contains('clicked')) {
-        item.classList.remove('clicked');
-        cellState[y][x] = 1;
-    } else {
-        item.classList.add('clicked');
-        cellState[y][x] = 0;
-    }
-    
     // Add logic here
     // Check if the item has a bomb
     if (bombs[y][x] === 1) {
@@ -35,7 +26,18 @@ function processItem(x, y, event) {
             }
         }
     } else {
-        console.log('No bomb');
+        // check if the item has the class clicked (basicaly a toggle)
+        if (item.classList.contains('clicked')) {
+            item.classList.remove('clicked');
+            item.classList.add('num'+bombProximityMask[y][x])
+            item.innerHTML = '';
+            cellState[y][x] = 1;
+        } else {
+            item.classList.add('clicked');
+            item.classList.add('num'+bombProximityMask[y][x])
+            item.innerHTML = bombProximityMask[y][x];
+            cellState[y][x] = 0;
+        }
     }
 }
 
