@@ -18,13 +18,7 @@ function processItem(x, y, event) {
     // Check if the item has a bomb
     if (bombs[y][x] === 1) {
         console.log('BOOM!');
-        for (let x = 0; x < gridSize; x++) {
-            for (let y = 0; y < gridSize; y++) {
-                if (bombs[y][x] === 1) {
-                    grid[y][x].classList.add('mine');
-                }
-            }
-        }
+        youlose();
     } else {
         // check if the item has the class clicked (basicaly a toggle)
         if (item.classList.contains('clicked')) {
@@ -87,6 +81,16 @@ function calcBombProximity() {
                 bombCount++;
             }
             bombProximityMask[y].push(bombCount);
+        }
+    }
+}
+
+function youlose() {
+    for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+            if (bombs[y][x] === 1) {
+                grid[y][x].classList.add('mine');
+            }
         }
     }
 }
