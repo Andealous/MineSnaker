@@ -86,13 +86,15 @@ function calcBombProximity() {
     }
 }
 
+// function to make islands
 function makeIslands() {
     for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
-
+            if (bombs[y][x] === 0 && bombProximityMask[y][x] === 0) {
+                islandMask[y][x] = 1;
+            }
         }
     }
-    console.log(islandMask);
 }
 
 function youlose() {
@@ -114,6 +116,7 @@ for (let y = 0; y < gridSize; y++) {
     grid.push([]);
     cellState.push([]);
     bombs.push([]);
+    islandMask.push([]);
 
     for (let x = 0; x < gridSize; x++) {
         // Create a new div element for each cell
@@ -130,6 +133,7 @@ for (let y = 0; y < gridSize; y++) {
         grid[y].push(cell);
         cellState[y].push(0);
         bombs[y].push(0);
+        islandMask[y].push(0);
     }
 }
 
@@ -141,3 +145,4 @@ makeIslands();
 // Print the bombs array
 console.log(bombs);
 console.log(bombProximityMask);
+console.log(islandMask);
