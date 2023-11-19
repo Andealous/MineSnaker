@@ -96,10 +96,6 @@ function youlose() {
     }
 }
 
-function debugbombs() {
-    console.log(bombs);
-}
-
 // Get the grid container element
 const gridContainer = document.querySelector('.game');
 
