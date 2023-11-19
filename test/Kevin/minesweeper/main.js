@@ -3,10 +3,11 @@
 const gridSize = 16;
 const bombCount = 40;
 
-grid = [];
+grid = []; // items in the grid
 
 bombs = []; // 0 = no bomb, 1 = bomb
 bombProximityMask = []; // 0 = no bomb, 1 = 1 bomb, 2 = 2 bombs, etc.
+islandMask = []; // islands of 2 or more cells with a proximity of 0 and directly surrounding cells, islands are defined with a index number.
 cellState = []; // 0 = unclicked, 1 = clicked, 2 = flagged, 3 = question mark
 
 // Function to call with x and y coordinates
