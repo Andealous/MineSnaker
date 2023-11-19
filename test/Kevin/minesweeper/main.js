@@ -86,6 +86,15 @@ function calcBombProximity() {
     }
 }
 
+function makeIslands() {
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+
+        }
+    }
+    console.log(islandMask);
+}
+
 function youlose() {
     for (let x = 0; x < gridSize; x++) {
         for (let y = 0; y < gridSize; y++) {
@@ -127,6 +136,7 @@ for (let y = 0; y < gridSize; y++) {
 // Call the function to add bombs
 addBombs();
 calcBombProximity();
+makeIslands();
 
 // Print the bombs array
 console.log(bombs);
