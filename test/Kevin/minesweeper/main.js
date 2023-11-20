@@ -9,8 +9,9 @@ let bombs = []; // 0 = no bomb, 1 = bomb
 let bombProximityMask = []; // 0 = no bomb, 1 = 1 bomb, 2 = 2 bombs, etc.
 let islandMask = []; // islands of 2 or more cells with a proximity of 0 and directly surrounding cells, islands are defined with a index number.
 let cellState = []; // 0 = unclicked, 1 = clicked, 2 = flagged, 3 = question mark
+let emptylist = []; // list of empty cells
 
-let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
+let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 // Function to call with x and y coordinates
 function processItem(x, y, event) {
@@ -45,14 +46,7 @@ function clearIsland(islandIndex) {
     for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
             if (islandMask[y][x] === islandIndex) {
-                for (let i = 0; i < 8; i++) {
-                    let xpos = x + surroundingCells[i][0];
-                    let ypos = y + surroundingCells[i][1];
-                    if (0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
-                        selectItem(xpos, ypos);
-                    }
-                }
-                
+                selectItem(x, y);
             }
         }
     }
@@ -78,8 +72,8 @@ function calcBombProximity() {
         bombProximityMask.push([]);
         for (let x = 0; x < gridSize; x++) {
             let bombCount = 0;
-            // Check if there is a bomb in the 8 surrounding cells
-            for (let i = 0; i < 8; i++) {
+            // Check if there is a bomb in the 9 surrounding cells
+            for (let i = 0; i < 9; i++) {
                 let xpos = x + surroundingCells[i][0];
                 let ypos = y + surroundingCells[i][1];
                 if (0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
@@ -88,31 +82,6 @@ function calcBombProximity() {
                     }
                 }
             }
-            /*
-            if (x > 0 && y > 0 && bombs[y - 1][x - 1] === 1) {
-                bombCount++;
-            }
-            if (y > 0 && bombs[y - 1][x] === 1) {
-                bombCount++;
-            }
-            if (x < gridSize - 1 && y > 0 && bombs[y - 1][x + 1] === 1) {
-                bombCount++;
-            }
-            if (x > 0 && bombs[y][x - 1] === 1) {
-                bombCount++;
-            }
-            if (x < gridSize - 1 && bombs[y][x + 1] === 1) {
-                bombCount++;
-            }
-            if (x > 0 && y < gridSize - 1 && bombs[y + 1][x - 1] === 1) {
-                bombCount++;
-            }
-            if (y < gridSize - 1 && bombs[y + 1][x] === 1) {
-                bombCount++;
-            }
-            if (x < gridSize - 1 && y < gridSize - 1 && bombs[y + 1][x + 1] === 1) {
-                bombCount++;
-            }*/
             bombProximityMask[y].push(bombCount);
         }
     }
@@ -120,13 +89,28 @@ function calcBombProximity() {
 
 // function to make islands
 function makeIslands() {
+    let tmplst = [];
     for (let y = 0; y < gridSize; y++) {
+        tmplst.push([]);
         for (let x = 0; x < gridSize; x++) {
             if (bombs[y][x] === 0 && bombProximityMask[y][x] === 0 && islandMask[y][x] === 0) {
                 islandMask[y][x] = 1;
             }
+            tmplst[y].push(0);
         }
     }
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            for (let i = 0; i < 9; i++) {
+                let xpos = x + surroundingCells[i][0];
+                let ypos = y + surroundingCells[i][1];
+                if (islandMask[y][x] != 0 && 0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
+                    tmplst[ypos][xpos] = islandMask[y][x];
+                }
+            }
+        }
+    }
+    islandMask = tmplst;
 }
 
 function youlose() {
@@ -150,10 +134,11 @@ function createGrid(){
         cellState.push([]);
         bombs.push([]);
         islandMask.push([]);
+        emptylist.push([]);
 
         for (let x = 0; x < gridSize; x++) {
             // Create a new div element for each cell
-            const cell = document.createElement('div');
+            const cell = document.createElement('button');
             cell.onclick = () => processItem(x, y);
             cell.classList.add('grid-cell');
             cell.className = 'cell';
@@ -167,6 +152,7 @@ function createGrid(){
             cellState[y].push(0);
             bombs[y].push(0);
             islandMask[y].push(0);
+            emptylist[y].push(0);
         }
     }
 }
