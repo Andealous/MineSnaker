@@ -89,23 +89,28 @@ button {
 #selectbtn {
     width: 100px;
     height: 100px;
-    background-color: #5f5;
+    background-color: #6f6;
     border: #888 solid 1px;
     border-radius: 50px;
 }
+#selectbtn .btnactive {
+    background-color: #383;
+}
 #selectbtn:hover {
-    background-color: #7f7;
+    background-color: #8f8;
 }
 
 /* FLAG button */
 #flagbtn {
     width: 100px;
     height: 100px;
-    background-color: #55f;
+    background-color: #66f;
     border: #888 solid 1px;
     border-radius: 50px;
 }
-
+#flagbtn .btnactive {
+    background-color: #338;
+}
 #flagbtn:hover {
-    background-color: #77f;
+    background-color: #88f;
 }

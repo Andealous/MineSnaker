@@ -11,6 +11,8 @@ let islandMask = []; // islands of 2 or more cells with a proximity of 0 and dir
 let cellState = []; // 0 = unclicked, 1 = clicked, 2 = flagged, 3 = question mark
 let emptylist = []; // list of empty cells
 
+let flag = false;
+
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 // Function to call with x and y coordinates
@@ -119,6 +121,31 @@ function youlose() {
             if (bombs[y][x] === 1) {
                 grid[y][x].classList.add('mine');
             }
+        }
+    }
+}
+
+function btnselect() {
+    selbtn = document.querySelector("#selectbtn");
+    flgbtn = document.querySelector("#flagbtn");
+    if (selbtn.classList.contains("btnactive")) {
+        return;
+    } else {
+        selbtn.classList.add("btnactive");
+        if (flgbtn.classList.contains("btnactive")) {
+            flgbtn.classList.remove("btnactive");
+        }
+    }
+}
+function btnflag() {
+    selbtn = document.querySelector("#selectbtn");
+    flgbtn = document.querySelector("#flagbtn");
+    if (flgbtn.classList.contains("btnactive")) {
+        return;
+    } else {
+        flgbtn.classList.add("btnactive");
+        if (selbtn.classList.contains("btnactive")) {
+            selbtn.classList.remove("btnactive");
         }
     }
 }
