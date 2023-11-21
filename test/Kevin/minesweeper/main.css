@@ -1,0 +1,116 @@
+:root{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    font-size: 20px;
+}
+
+#game {
+    width: 500px;
+    height: 500px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+}
+
+.cell {
+    background-color: #888;
+    border-radius: 5px;
+    margin: 1px;
+}
+
+.cell:hover {
+    background-color: #aaa;
+}
+
+/* Clicked */
+.clicked {
+    background-color: #080;
+}
+.clicked:hover {
+    background-color: #0a0;
+}
+
+/* Flagged */
+.flagged {
+    background-color: #800;
+}
+.flagged:hover {
+    background-color: #a00;
+}
+
+/* Mine */
+.mine {
+    background-color: #f00;
+}
+.mine:hover {
+    background-color: #f22;
+}
+
+/* Numbers */
+.num1 {
+    color: #00f;
+}
+.num2 {
+    color: #00f;
+}
+.num3 {
+    color: #00f;
+}
+.num4 {
+    color: #00f;
+}
+.num5 {
+    color: #00f;
+}
+.num6 {
+    color: #00f;
+}
+.num7 {
+    color: #00f;
+}
+.num8 {
+    color: #00f;
+}
+
+
+.selectionbuttons {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Select button */
+#selectbtn {
+    width: 100px;
+    height: 100px;
+    background-color: #6f6;
+    border: #888 solid 1px;
+    border-radius: 50px;
+}
+#selectbtn .btnactive {
+    background-color: #383;
+}
+#selectbtn:hover {
+    background-color: #8f8;
+}
+
+/* FLAG button */
+#flagbtn {
+    width: 100px;
+    height: 100px;
+    background-color: #66f;
+    border: #888 solid 1px;
+    border-radius: 50px;
+}
+#flagbtn .btnactive {
+    background-color: #338;
+}
+#flagbtn:hover {
+    background-color: #88f;
+}
