@@ -48,7 +48,15 @@ function clearIsland(islandIndex) {
     for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
             if (islandMask[y][x] === islandIndex) {
-                selectItem(x, y);
+                for (let i = 0; i < 9; i++) {
+                    let xpos = x + surroundingCells[i][0];
+                    let ypos = y + surroundingCells[i][1];
+                    if (0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
+                        if (cellState[ypos][xpos] === 0) {
+                            selectItem(xpos, ypos);
+                        }
+                    }
+                }
             }
         }
     }
@@ -101,18 +109,51 @@ function makeIslands() {
             tmplst[y].push(0);
         }
     }
-    for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++) {
-            for (let i = 0; i < 9; i++) {
-                let xpos = x + surroundingCells[i][0];
-                let ypos = y + surroundingCells[i][1];
-                if (islandMask[y][x] != 0 && 0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
-                    tmplst[ypos][xpos] = islandMask[y][x];
+    // find connected islands
+    let islandIndex = 1;
+    let running = true;
+    for (let y=0; y < gridSize; y++) {
+        for (let x=0; x < gridSize; x++) {
+            // check if cell is part of an island
+
+            if (islandMask[y][x] == 1){
+                islandMask[y][x] = 100;
+                islandIndex++;
+                // find whole island
+                let findingpath = true;
+                while (findingpath){
+                    findingpath = false;
+                    // check full frame for cells with proximity 100
+                    for (let y = 0; y < gridSize; y++) {
+                        for (let x = 0; x < gridSize; x++) {
+                            // check wich surrounding cells of proximity 100 have proximity 1
+                            for (let i = 0; i < 9; i++) {
+                                let xpos = x + surroundingCells[i][0];
+                                let ypos = y + surroundingCells[i][1];
+                                if (0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
+                                    if (bombs[ypos][xpos] === 0 && bombProximityMask[ypos][xpos] === 0 && islandMask[ypos][xpos] === 1) {
+                                        islandMask[ypos][xpos] = 100;
+                                        findingpath = true;
+                                        console.log('found path ' + islandIndex);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // set all cells with proximity 100 to islandIndex
+                for (let y = 0; y < gridSize; y++) {
+                    for (let x = 0; x < gridSize; x++) {
+                        if (islandMask[y][x] === 100) {
+                            islandMask[y][x] = islandIndex;
+                        }
+                    }
                 }
             }
         }
     }
-    islandMask = tmplst;
+    
+    //islandMask = tmplst;
 }
 
 function youlose() {
@@ -146,6 +187,27 @@ function btnflag() {
         flgbtn.classList.add("btnactive");
         if (selbtn.classList.contains("btnactive")) {
             selbtn.classList.remove("btnactive");
+        }
+    }
+}
+
+// show contents of arrays (1 = bombs, 2 = bombproximity, 3 = islandmask)
+function showArrays(arr) {
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            if (arr === 1) {
+                grid[y][x].innerHTML = bombs[y][x];
+                if (bombs[y][x] === 1){
+                    grid[y][x].classList.add('mine');
+                }
+            } else if (arr === 2) {
+                grid[y][x].innerHTML = bombProximityMask[y][x];
+            } else if (arr === 3) {
+                grid[y][x].innerHTML = islandMask[y][x];
+                if (islandMask[y][x] != 0) {
+                    grid[y][x].classList.add('debugIsland');
+                }
+            }
         }
     }
 }
