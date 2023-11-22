@@ -103,6 +103,7 @@ button {
 }
 #selectbtn:hover {
     background-color: #8f8;
+    cursor: pointer;
 }
 
 /* FLAG button */
@@ -118,4 +119,7 @@ button {
 }
 #flagbtn:hover {
     background-color: #88f;
+    cursor: pointer;
 }
+
+
