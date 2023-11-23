@@ -114,3 +114,7 @@ button {
 #flagbtn:hover {
     background-color: #88f;
 }
+
+.debugIsland {
+    background-color: blue;
+}

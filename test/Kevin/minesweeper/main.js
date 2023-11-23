@@ -12,6 +12,8 @@ let cellState = []; // 0 = unclicked, 1 = clicked, 2 = flagged, 3 = question mar
 let emptylist = []; // list of empty cells
 
 let flag = false;
+let flags = 0;
+let correctFlags = 0;
 
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
@@ -21,17 +23,26 @@ function processItem(x, y, event) {
     const item = grid[y][x]
 
     // Add logic here
-    // Check if the item has a bomb
-    if (bombs[y][x] === 1) {
-        console.log('BOOM!');
-        youlose();
-    } else {
-        // check if the item has the class clicked (basicaly a toggle)
-        selectItem(x, y)
-        if (islandMask[y][x] != 0) {
-            console.log('Island!');
-            clearIsland(1);
+    // flag or select?
+    if (!flag) {
+        // Check if the item has a bomb
+        if (bombs[y][x] === 1) {
+            console.log('BOOM!');
+            youlose();
+        } else {
+            // check if the item is an island
+            if (islandMask[y][x] != 0) {
+                console.log('Island!');
+                clearIsland(islandMask[y][x]);
+            }
+            else {
+                console.log('Empty!');
+                selectItem(x, y);
+            }
         }
+    } else {
+        flagItem(x, y);
+        console.log('Flagged!');
     }
 }
 
@@ -43,12 +54,42 @@ function selectItem(x, y) {
     cellState[y][x] = 0;
 }
 
+function flagItem(x, y) {
+    item = grid[y][x];
+    if (item.classList.contains('flagged')) {
+        item.classList.remove('flagged');
+
+        flags--;
+        if (bombs[y][x] === 1) {
+            correctFlags--;
+        }
+    } else {
+        item.classList.add('flagged');
+
+        flags++;
+        if (bombs[y][x] === 1) {
+            correctFlags++;
+        }
+    }
+    if (flags === correctFlags && flags === bombCount) {
+        console.log('You win!');
+    }
+}
+
 // clear full island
 function clearIsland(islandIndex) {
     for (let y = 0; y < gridSize; y++) {
         for (let x = 0; x < gridSize; x++) {
             if (islandMask[y][x] === islandIndex) {
-                selectItem(x, y);
+                for (let i = 0; i < 9; i++) {
+                    let xpos = x + surroundingCells[i][0];
+                    let ypos = y + surroundingCells[i][1];
+                    if (0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
+                        if (cellState[ypos][xpos] === 0) {
+                            selectItem(xpos, ypos);
+                        }
+                    }
+                }
             }
         }
     }
@@ -91,28 +132,32 @@ function calcBombProximity() {
 
 // function to make islands
 function makeIslands() {
-    let tmplst = [];
+    islandIndex = 1;
     for (let y = 0; y < gridSize; y++) {
-        tmplst.push([]);
         for (let x = 0; x < gridSize; x++) {
-            if (bombs[y][x] === 0 && bombProximityMask[y][x] === 0 && islandMask[y][x] === 0) {
-                islandMask[y][x] = 1;
+            if (bombProximityMask[y][x] === 0 && bombs[y][x] === 0 && islandMask[y][x] === 0) {
+                islandMask[y][x] = islandIndex;
+                setIsland(x, y, islandIndex);
+                islandIndex = islandIndex + 1;
             }
-            tmplst[y].push(0);
         }
     }
-    for (let y = 0; y < gridSize; y++) {
-        for (let x = 0; x < gridSize; x++) {
-            for (let i = 0; i < 9; i++) {
-                let xpos = x + surroundingCells[i][0];
-                let ypos = y + surroundingCells[i][1];
-                if (islandMask[y][x] != 0 && 0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
-                    tmplst[ypos][xpos] = islandMask[y][x];
+}
+
+function setIsland(x, y, index) {
+    for (let yo = -1; yo <= 1 ; yo++) {
+        for (let xo = -1; xo <= 1 ; xo++) {
+            let xpos = x + xo;
+            let ypos = y + yo;
+            if (0 <= xpos && xpos < gridSize && 0 <= ypos && ypos < gridSize) {
+                if (bombProximityMask[ypos][xpos] === 0 && bombs[ypos][xpos] === 0 && islandMask[ypos][xpos] === 0) {
+                    islandMask[ypos][xpos] = index;
+                    setIsland(xpos, ypos, index);
+                    console.log("EEEEE");
                 }
             }
         }
     }
-    islandMask = tmplst;
 }
 
 function youlose() {
@@ -128,6 +173,7 @@ function youlose() {
 function btnselect() {
     selbtn = document.querySelector("#selectbtn");
     flgbtn = document.querySelector("#flagbtn");
+    flag = false;
     if (selbtn.classList.contains("btnactive")) {
         return;
     } else {
@@ -140,12 +186,34 @@ function btnselect() {
 function btnflag() {
     selbtn = document.querySelector("#selectbtn");
     flgbtn = document.querySelector("#flagbtn");
+    flag = true;
     if (flgbtn.classList.contains("btnactive")) {
         return;
     } else {
         flgbtn.classList.add("btnactive");
         if (selbtn.classList.contains("btnactive")) {
             selbtn.classList.remove("btnactive");
+        }
+    }
+}
+
+// show contents of arrays (1 = bombs, 2 = bombproximity, 3 = islandmask)
+function showArrays(arr) {
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            if (arr === 1) {
+                grid[y][x].innerHTML = bombs[y][x];
+                if (bombs[y][x] === 1){
+                    grid[y][x].classList.add('mine');
+                }
+            } else if (arr === 2) {
+                grid[y][x].innerHTML = bombProximityMask[y][x];
+            } else if (arr === 3) {
+                grid[y][x].innerHTML = islandMask[y][x];
+                if (islandMask[y][x] != 0) {
+                    grid[y][x].classList.add('debugIsland');
+                }
+            }
         }
     }
 }
