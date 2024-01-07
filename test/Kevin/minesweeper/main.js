@@ -15,6 +15,9 @@ let flag = false;
 let flags = 0;
 let correctFlags = 0;
 
+let firstClick = true;
+let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
+
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 // Function to call with x and y coordinates
@@ -23,6 +26,25 @@ function processItem(x, y, event) {
     const item = grid[y][x]
 
     // Add logic here
+    if(firstClick){
+        let searching = true;
+        while(searching){
+            clearArrays();
+            addBombs();
+            calcBombProximity();
+            console.log('bombs', bombs);
+            console.log('bombproximitymask', bombProximityMask);
+            if(bombProximityMask[y][x] == 0 && bombs[y][x] == 0){
+                searching = false;
+            }
+        }
+        makeIslands();
+        firstClick = false;
+    }
+    // Check if the item has a bomb
+    if (bombs[y][x] === 1) {
+        console.log('BOOM!');
+        youlose();
     // flag or select?
     if (!flag) {
         // Check if the item has a bomb
@@ -73,6 +95,24 @@ function flagItem(x, y) {
     }
     if (flags === correctFlags && flags === bombCount) {
         console.log('You win!');
+    }
+}
+
+// clearArrays
+function clearArrays() {
+    cellState = [];
+    bombs = [];
+    bombProximityMask = [];
+    islandMask = [];
+    for (let y = 0; y < gridSize; y++) {
+        cellState.push([]);
+        bombs.push([]);
+        islandMask.push([]);
+        for (let x = 0; x < gridSize; x++) {
+            cellState[y].push(0);
+            bombs[y].push(0);
+            islandMask[y].push(0);
+        }
     }
 }
 
@@ -254,9 +294,9 @@ function createGrid(){
 
 // Call the function to add bombs
 createGrid();
-addBombs();
-calcBombProximity();
-makeIslands();
+// addBombs();
+// calcBombProximity();
+// makeIslands();
 
 // Print the bombs array
 console.log('bombs', bombs);
