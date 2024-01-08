@@ -47,10 +47,6 @@ function processItem(x, y, event) {
         makeIslands();
         firstClick = false;
     }
-    // Check if the item has a bomb
-    if (bombs[y][x] === 1) {
-        console.log('BOOM!');
-        youlose();
     // flag or select?
     if (!flag) {
         // Check if the item has a bomb
