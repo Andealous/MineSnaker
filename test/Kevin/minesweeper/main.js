@@ -250,24 +250,22 @@ function playagain() {
     timer = 0;
     points = 0;
     minPoints = 0;
+    firstClick = true;
 
-    // Reset bomb proximity mask, islands, and bombs
-    calcBombProximity();
-    makeIslands();
-    addBombs();
+    clearArrays();
 
     // Reset UI elements
     // Hide youwinSchreen
     const youwinSchreen = document.querySelector("#youwin");
     youwinSchreen.classList.add("hide");
 
-    // Reset grid cells
-    addBombs();
-    calcBombProximity();
-    makeIslands();
-
     // Start the game timer
     startTimer();
+}
+
+
+function reset(){
+    
 }
 
 
@@ -299,10 +297,12 @@ function btnflag() {
 }
 
 // timer
-let timerInterval = setInterval(function() {
-    timer++;
-    updateTimer();
-}, 1000);
+function startTimer() {
+    let timerInterval = setInterval(function() {
+        timer++;
+        updateTimer();
+    }, 1000);
+}
 
 function updateTimer() {
     document.getElementById('timer').innerText = "Time: " + timer;
