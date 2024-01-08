@@ -10,6 +10,7 @@
     <div class="container" id="container">
         <center><h1>MINESWEEPER</h1></center>
         <center>
+        <div class="timer" id="timer">Time: 0</div>
         <div class="game" id="game">
         </div>
         </center>
@@ -19,12 +20,14 @@
             <button id="flagbtn" class="" onclick="btnflag()">flag</button>
         </div>
         </center>
-    <!-- <div class="buttons">
-            <button id="easy">Easy</button>
-            <button id="medium">Medium</button>
-            <button id="hard">Hard</button>
-            <button id="reset">Reset</button>
-    </div> -->
+        
+        <!-- youwinSchreen -->
+        <div class="youwin hide" id="youwin">
+            <center>
+                <h1>YOU WIN</h1>
+                <button id="playagain" onclick="playagain()">Play Again</button>
+            </center>
+        </div>
     <script src="main.js"></script>
 </body>
 </html>

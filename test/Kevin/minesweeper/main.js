@@ -15,6 +15,14 @@ let flag = false;
 let flags = 0;
 let correctFlags = 0;
 
+let timer = 0;
+let points = 0;
+let winMinPoints = 50;
+
+// you get one point per correct flag
+// when you loose you get only the points for the correct flags
+// when you win you get liniearly less points the longer you take, with a lower limit
+
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 // Function to call with x and y coordinates
@@ -168,7 +176,57 @@ function youlose() {
             }
         }
     }
+    clearInterval(timerInterval);
 }
+
+function youwin() {
+    // Display youwinSchreen
+    const youwinSchreen = document.querySelector("#youwin");
+    youwinSchreen.classList.remove("hide");
+
+    // Stop the timer
+    clearInterval(timerInterval);
+
+    // Calculate the final score based on the time taken
+    points = minPoints - timer;
+
+    // Update the UI with the final score
+    const scoreElement = document.querySelector("#score");
+    scoreElement.textContent = points;
+}
+
+
+function playagain() {
+    // Reset game state variables and UI
+    islandMask = [];
+    cellState = [];
+    emptylist = [];
+    flag = false;
+    flags = 0;
+    correctFlags = 0;
+    timer = 0;
+    points = 0;
+    minPoints = 0;
+
+    // Reset bomb proximity mask, islands, and bombs
+    calcBombProximity();
+    makeIslands();
+    addBombs();
+
+    // Reset UI elements
+    // Hide youwinSchreen
+    const youwinSchreen = document.querySelector("#youwin");
+    youwinSchreen.classList.add("hide");
+
+    // Reset grid cells
+    addBombs();
+    calcBombProximity();
+    makeIslands();
+
+    // Start the game timer
+    startTimer();
+}
+
 
 function btnselect() {
     selbtn = document.querySelector("#selectbtn");
@@ -195,6 +253,16 @@ function btnflag() {
             selbtn.classList.remove("btnactive");
         }
     }
+}
+
+// timer
+let timerInterval = setInterval(function() {
+    timer++;
+    updateTimer();
+}, 1000);
+
+function updateTimer() {
+    document.getElementById('timer').innerText = "Time: " + timer;
 }
 
 // show contents of arrays (1 = bombs, 2 = bombproximity, 3 = islandmask)
