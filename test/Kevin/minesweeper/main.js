@@ -26,6 +26,11 @@ let firstClick = true;
 
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
+const clearHtml = '';
+const bombHtml = '<img src="pictures/bomb.png" alt="bomb" width="30" height="30">';
+const flagHtml = '<img src="pictures/flag.png" alt="flag" width="30" height="30">';
+
+
 // Function to call with x and y coordinates
 function processItem(x, y, event) {
     console.log(`Processing item at (${x}, ${y})`);
@@ -82,6 +87,7 @@ function flagItem(x, y) {
     item = grid[y][x];
     if (item.classList.contains('flagged')) {
         item.classList.remove('flagged');
+        item.innerHTML = clearHtml;
 
         flags--;
         if (bombs[y][x] === 1) {
@@ -89,6 +95,7 @@ function flagItem(x, y) {
         }
     } else {
         item.classList.add('flagged');
+        item.innerHTML = flagHtml;
 
         flags++;
         if (bombs[y][x] === 1) {
@@ -207,6 +214,7 @@ function youlose() {
         for (let y = 0; y < gridSize; y++) {
             if (bombs[y][x] === 1) {
                 grid[y][x].classList.add('mine');
+                grid[y][x].innerHTML = bombHtml;
             }
         }
     }
@@ -215,6 +223,7 @@ function youlose() {
 
 function youwin() {
     // Display youwinSchreen
+    console.log('You win!');
     const youwinSchreen = document.querySelector("#youwin");
     youwinSchreen.classList.remove("hide");
 
