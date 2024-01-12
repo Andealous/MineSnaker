@@ -17,10 +17,13 @@ let correctFlags = 0;
 
 let timer = 0;
 let points = 0;
-let winMinPoints = 50;
+let minPoints = 20;
+let startPoints = 600;
 // you get one point per correct flag
 // when you loose you get only the points for the correct flags
 // when you win you get liniearly less points the longer you take, with a lower limit
+
+let cookieExpiration = 7; // days
 
 let firstClick = true;
 
@@ -30,6 +33,23 @@ const clearHtml = '';
 const bombHtml = '<img src="pictures/bomb.png" alt="bomb" width="30" height="30">';
 const flagHtml = '<img src="pictures/flag.png" alt="flag" width="30" height="30">';
 
+highScore = getcookie('highscore');
+setcookie('highscore', highScore);
+
+function getcookie(name) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [k,v] = el.split('=');
+        cookie[k.trim()] = v;
+    })
+    return cookie[name] || 0;
+}
+
+function setcookie(name, value) {
+    let d = new Date;
+    d.setTime(d.getTime() + 24*60*60*1000*cookieExpiration);
+    document.cookie = name + "=" + value + ";path=/;expires=" + d.toUTCString();
+}
 
 // Function to call with x and y coordinates
 function processItem(x, y, event) {
@@ -93,6 +113,7 @@ function flagItem(x, y) {
         flags--;
         if (bombs[y][x] === 1) {
             correctFlags--;
+
         }
     } else {
         item.classList.add('flagged');
@@ -105,7 +126,13 @@ function flagItem(x, y) {
     }
     if (flags === correctFlags && flags === bombCount) {
         console.log('You win!');
+        youwin();
     }
+    updatebombcount();
+}
+
+function updatebombcount() {
+    document.getElementById('bombs').innerText = "Bombs: " + (bombCount - flags);
 }
 
 // clearArrays
@@ -228,6 +255,8 @@ function youwin() {
     const youwinSchreen = document.querySelector("#youwin");
     youwinSchreen.classList.remove("hide");
 
+    setcookie('highscore', points);
+
     // Stop the timer
     clearInterval(timerInterval);
 
@@ -262,13 +291,8 @@ function playagain() {
 
     // Start the game timer
     startTimer();
+    location.reload();
 }
-
-
-function reset(){
-    
-}
-
 
 function btnselect() {
     selbtn = document.querySelector("#selectbtn");
@@ -297,16 +321,18 @@ function btnflag() {
     }
 }
 
-// timer
-function startTimer() {
-    let timerInterval = setInterval(function() {
-        timer++;
-        updateTimer();
-    }, 1000);
-}
-
 function updateTimer() {
     document.getElementById('timer').innerText = "Time: " + timer;
+}
+
+function updatePoints(){
+    pts = startPoints - timer;
+    // maybe some mathy stuff here
+    if(pts < minPoints){
+        pts = minPoints;
+    }
+    points = pts;
+    document.getElementById('points').innerText = "Points: " + points;
 }
 
 // show contents of arrays (1 = bombs, 2 = bombproximity, 3 = islandmask)
@@ -362,6 +388,16 @@ function createGrid(){
             emptylist[y].push(0);
         }
     }
+}
+
+// timer
+let timerInterval;
+function startTimer() {
+    timerInterval = setInterval(function() {
+        timer++;
+        updateTimer();
+        updatePoints();
+    }, 1000);
 }
 
 // Call the function to add bombs
