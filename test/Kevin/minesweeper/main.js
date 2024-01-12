@@ -50,6 +50,7 @@ function processItem(x, y, event) {
             }
         }
         makeIslands();
+        startTimer();
         firstClick = false;
     }
     // flag or select?
