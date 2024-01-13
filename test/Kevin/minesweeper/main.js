@@ -35,6 +35,8 @@ const flagHtml = '<img src="pictures/flag.png" alt="flag" width="30" height="30"
 
 highScore = getcookie('highscore');
 setcookie('highscore', highScore);
+document.querySelector("#highscore").textContent = "Highscore: " + highScore;
+
 
 function getcookie(name) {
     let cookie = {};
@@ -98,9 +100,13 @@ function processItem(x, y, event) {
 
 function selectItem(x, y) {
     item = grid[y][x];
+    proxval = bombProximityMask[y][x];
+
     item.classList.add('clicked');
-    item.classList.add('num'+bombProximityMask[y][x])
-    item.innerHTML = bombProximityMask[y][x];
+    if (proxval != 0) {
+        item.classList.add('num')
+        item.innerHTML = proxval;
+    }
     cellState[y][x] = 0;
 }
 
@@ -246,6 +252,11 @@ function youlose() {
             }
         }
     }
+
+    // Display youloseSchreen
+    const youloseSchreen = document.querySelector("#youlose");
+    youloseSchreen.classList.remove("hide");
+
     clearInterval(timerInterval);
 }
 
@@ -255,13 +266,13 @@ function youwin() {
     const youwinSchreen = document.querySelector("#youwin");
     youwinSchreen.classList.remove("hide");
 
-    setcookie('highscore', points);
-
     // Stop the timer
     clearInterval(timerInterval);
 
-    // Calculate the final score based on the time taken
-    points = minPoints - timer;
+    if (points > highScore) {
+        highScore = points;
+        setcookie('highscore', points);
+    }
 
     // Update the UI with the final score
     const scoreElement = document.querySelector("#score");
@@ -373,9 +384,9 @@ function createGrid(){
             // Create a new div element for each cell
             const cell = document.createElement('button');
             cell.onclick = () => processItem(x, y);
-            cell.classList.add('grid-cell');
+            // cell.classList.add('grid-cell');
             cell.className = 'cell';
-            cell.id = 'cell-' + x + '-' + y;
+            cell.id = 'cell-x' + x + '-y' + y;
 
             // Append the cell to the grid container
             gridContainer.appendChild(cell);

@@ -1,6 +1,35 @@
 :root{
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
+
+    /* Colors */
+    --background: #141418;
+    --gameBackground: #242428;
+    --cellColor: #454ade;
+    --cellColorHover: #353aCe;
+    --clickedColor: #141418;
+    --clickedColorHover: #141418;
+    --flaggedColor: #968FA7;
+    --flaggedColorHover: #867F97;
+    --mineColor: #ce1d1d;
+    --mineColorHover: #ce1d1d;
+    --numColor: #D3DAE1;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: white;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 button {
@@ -8,6 +37,9 @@ button {
 }
 
 #game {
+    background-color: var(--gameBackground);
+    padding: 10px;
+    border-radius: 5px;
     width: 600px;
     height: 600px;
     display: grid;
@@ -15,8 +47,19 @@ button {
     grid-template-rows: repeat(16, 1fr);
 }
 
+#scoreScreen {
+    width: 600px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    p {
+        font-size: 24px;
+    }
+}
+
 .cell {
-    background-color: #888;
+    background-color: var(--cellColor);
     border-radius: 5px;
     margin: 1px;
     display: flex;
@@ -26,57 +69,36 @@ button {
 }
 
 .cell:hover {
-    background-color: #aaa;
+    background-color: var(--cellColorHover);
 }
 
 /* Clicked */
 .clicked {
-    background-color: #080;
+    background-color: var(--clickedColor);
 }
 .clicked:hover {
-    background-color: #0a0;
+    background-color: var(--clickedColorHover);
 }
 
 /* Flagged */
 .flagged {
-    background-color: #800;
+    background-color: var(--flaggedColor);
 }
 .flagged:hover {
-    background-color: #a00;
+    background-color: var(--flaggedColorHover);
 }
 
 /* Mine */
 .mine {
-    background-color: #f00;
+    background-color: var(--mineColor);
 }
 .mine:hover {
-    background-color: #f22;
+    background-color: var(--mineColorHover);
 }
 
 /* Numbers */
-.num1 {
-    color: #00f;
-}
-.num2 {
-    color: #00f;
-}
-.num3 {
-    color: #00f;
-}
-.num4 {
-    color: #00f;
-}
-.num5 {
-    color: #00f;
-}
-.num6 {
-    color: #00f;
-}
-.num7 {
-    color: #00f;
-}
-.num8 {
-    color: #00f;
+.num {
+    color: var(--numColor);
 }
 
 
@@ -156,6 +178,40 @@ button {
 
 .youwin button:hover {
     background-color: #8f8;
+}
+
+/* youloseSchreen */
+.youlose {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.youlose h1 {
+    color: white;
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.youlose button {
+    padding: 10px 20px;
+    font-size: 24px;
+    background-color: #f66;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.youlose button:hover {
+    background-color: #f88;
 }
 
 .show {
