@@ -61,7 +61,7 @@ button {
 .cell {
     background-color: var(--cellColor);
     border-radius: 5px;
-    margin: 1px;
+    margin: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,6 +99,15 @@ button {
 /* Numbers */
 .num {
     color: var(--numColor);
+}
+
+.flagPic {
+    width: 30px;
+    height: 30px;
+}
+.bombPic {
+    width: 30px;
+    height: 30px;
 }
 
 
@@ -220,3 +229,33 @@ button {
 .hide {
     display: none;
 }
+
+@media screen and (max-width: 768px) {
+    #game {
+        width: 300px;
+        height: 300px;
+    }
+
+    .cell {
+        font-size: 12px;
+        border-radius: 3px;
+    }
+
+    #scoreScreen {
+        width: 300px;
+        height: 50px;
+        p {
+            font-size: 16px;
+        }
+    }
+
+    .flagPic {
+        width: 15px;
+        height: 15px;
+    }
+    .bombPic {
+        width: 15px;
+        height: 15px;
+    }
+}
+

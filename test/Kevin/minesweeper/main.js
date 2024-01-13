@@ -18,7 +18,7 @@ let correctFlags = 0;
 let timer = 0;
 let points = 0;
 let minPoints = 20;
-let startPoints = 600;
+let startPoints = 1000;
 // you get one point per correct flag
 // when you loose you get only the points for the correct flags
 // when you win you get liniearly less points the longer you take, with a lower limit
@@ -30,12 +30,12 @@ let firstClick = true;
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 const clearHtml = '';
-const bombHtml = '<img src="pictures/bomb.png" alt="bomb" width="30" height="30">';
-const flagHtml = '<img src="pictures/flag.png" alt="flag" width="30" height="30">';
+const bombHtml = '<img src="pictures/bomb.png" alt="bomb" class="bombPic">';
+const flagHtml = '<img src="pictures/flag.png" alt="flag" class="flagPic">';
 
 highScore = getcookie('highscore');
 setcookie('highscore', highScore);
-document.querySelector("#highscore").textContent = "Highscore: " + highScore;
+document.getElementById("highscore").innerHTML = "Highscore: <br>" + highScore;
 
 
 function getcookie(name) {
@@ -138,7 +138,7 @@ function flagItem(x, y) {
 }
 
 function updatebombcount() {
-    document.getElementById('bombs').innerText = "Bombs: " + (bombCount - flags);
+    document.getElementById('bombs').innerText = "Bombs: \n" + (bombCount - flags);
 }
 
 // clearArrays
@@ -333,7 +333,7 @@ function btnflag() {
 }
 
 function updateTimer() {
-    document.getElementById('timer').innerText = "Time: " + timer;
+    document.getElementById('timer').innerText = "Time: \n" + timer;
 }
 
 function updatePoints(){
@@ -343,7 +343,7 @@ function updatePoints(){
         pts = minPoints;
     }
     points = pts;
-    document.getElementById('points').innerText = "Points: " + points;
+    document.getElementById('points').innerText = "Points: \n" + points;
 }
 
 // show contents of arrays (1 = bombs, 2 = bombproximity, 3 = islandmask)
