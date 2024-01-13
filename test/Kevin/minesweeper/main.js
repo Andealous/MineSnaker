@@ -30,8 +30,8 @@ let firstClick = true;
 let surroundingCells = [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
 
 const clearHtml = '';
-const bombHtml = '<img src="pictures/bomb.png" alt="bomb" class="bombPic">';
-const flagHtml = '<img src="pictures/flag.png" alt="flag" class="flagPic">';
+const bombHtml = '<img src="pictures/bomb.webp" alt="bomb" class="bombPic">';
+const flagHtml = '<img src="pictures/flag.webp" alt="flag" class="flagPic">';
 
 highScore = getcookie('highscore');
 setcookie('highscore', highScore);
