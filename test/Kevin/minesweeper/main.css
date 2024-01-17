@@ -130,6 +130,10 @@ button {
 
 /* Select button */
 #selectbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100px;
     height: 100px;
     background-color: #66f;
@@ -150,6 +154,10 @@ button {
 
 /* FLAG button */
 #flagbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100px;
     height: 100px;
     background-color: #aaa;
