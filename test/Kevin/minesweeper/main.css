@@ -249,6 +249,28 @@ button {
     background-color: #f88;
 }
 
+/* ExplainationScreen */
+.howtoplay {
+    margin-top: 10px;
+    text-align: center;
+    color: blue;
+    text-decoration: underline;
+}
+
+.explaination {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
 .show {
     display: flex;
 }

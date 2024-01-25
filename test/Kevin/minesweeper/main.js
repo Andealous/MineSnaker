@@ -305,6 +305,15 @@ function playagain() {
     location.reload();
 }
 
+function toggleExplaination() {
+    let item = document.querySelector("#explaination");
+    if(item.classList.contains("hide")){
+        item.classList.remove("hide");
+    } else {
+        item.classList.add("hide");
+    }
+}
+
 function btnselect() {
     selbtn = document.querySelector("#selectbtn");
     flgbtn = document.querySelector("#flagbtn");
